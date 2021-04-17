@@ -4,6 +4,21 @@ const Command = require("../../base/Command.js"),
 
 const mysql = require("mysql");
 
+/**Command for squad profile stats track.
+ * <h2>Usage: </h2>
+ * <h3>Linking your account</h3>
+ * <code>{prefix}profile {Steam64ID}</code>
+ * <br />
+ * <h3>Removing the link from your account</h3>
+ * <code>{prefix}profile re</code> OR <code>{prefix}profile re-link</code>
+ * <br />
+ * <h6>Note: </h6>
+ * <sub><sup>After linking your account you don't need to specify your steam64ID anymore. Just use; <code>{prefix}profile</code></sup></sub>
+ *
+ * @author LeventHAN
+ * @class Squad-Track-Profile
+ * @extends Command
+ */
 class Profile extends Command {
 	constructor(client) {
 		super(client, {
@@ -24,7 +39,7 @@ class Profile extends Command {
 
 	async run(message, args, /**@type {{}}*/ data) {
 		const client = this.client;
-		let claimed = "";
+		let claimer = "";
 		if (this.pool == null) {
 			// Only create one instance
 			this.pool = mysql.createPool({
@@ -65,6 +80,7 @@ class Profile extends Command {
 
 		if (args[0] === "re" || args[0] === "re-link") {
 			data.memberData.tracking = false;
+			data.memberData.steam64ID = "";
 			data.memberData.save();
 			return message.success("squad/profile:RE_LINKED");
 		}
@@ -79,13 +95,13 @@ class Profile extends Command {
 				element.steam64ID === args[0] &&
 				element.id !== message.member.id
 			) {
-				claimed = element.id;
+				claimer = element.id;
 			}
 		});
 
-		if (claimed != "") {
+		if (claimer != "") {
 			return message.error("squad/profile:ALREADY_EXISTING", {
-				username: claimed,
+				username: claimer,
 			});
 		}
 
@@ -109,6 +125,8 @@ class Profile extends Command {
 
 		/**
 		 * Send an embed message to the authors channel with the authors squad stats grabbed from MongoDB.
+		 *
+		 * @author LeventHAN
 		 */
 		function sendEmbed() {
 			const profileEmbed = new Discord.MessageEmbed()
@@ -243,72 +261,73 @@ class Profile extends Command {
 						message.member.roles.remove(role).catch(console.error);
 				});
 				let roleName = "KD 0+";
-				if (parseFloat(data.memberData.kills) > 50) {
-					switch (true) {
-					case parseFloat(data.memberData.kd) < 0.5:
-						roleName = "KD 0+";
-						break;
-					case parseFloat(data.memberData.kd) < 1.0:
-						roleName = "KD 0.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 1.5:
-						roleName = "KD 1+";
-						break;
-					case parseFloat(data.memberData.kd) < 2.0:
-						roleName = "KD 1.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 2.5:
-						roleName = "KD 2+";
-						break;
-					case parseFloat(data.memberData.kd) < 3.0:
-						roleName = "KD 2.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 3.5:
-						roleName = "KD 3+";
-						break;
-					case parseFloat(data.memberData.kd) < 4.0:
-						roleName = "KD 3.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 4.5:
-						roleName = "KD 4+";
-						break;
-					case parseFloat(data.memberData.kd) < 5.0:
-						roleName = "KD 4.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 5.5:
-						roleName = "KD 5+";
-						break;
-					case parseFloat(data.memberData.kd) < 6.0:
-						roleName = "KD 5.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 6.5:
-						roleName = "KD 6+";
-						break;
-					case parseFloat(data.memberData.kd) < 7:
-						roleName = "KD 6.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 7.5:
-						roleName = "KD 7+";
-						break;
-					case parseFloat(data.memberData.kd) < 8:
-						roleName = "KD 7.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 8.5:
-						roleName = "KD 8+";
-						break;
-					case parseFloat(data.memberData.kd) < 9:
-						roleName = "KD 8.5+";
-						break;
-					case parseFloat(data.memberData.kd) < 9.5:
-						roleName = "KD 9+";
-						break;
-					case parseFloat(data.memberData.kd) < 10:
-						roleName = "KD 9.5+";
-						break;
-					default:
-						roleName = "KD 10+";
-						break;
-					}
+				switch (true) {
+				case parseFloat(data.memberData.kd) < 0.5:
+					roleName = "KD 0+";
+					break;
+				case parseFloat(data.memberData.kd) < 1.0:
+					roleName = "KD 0.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 1.5:
+					roleName = "KD 1+";
+					break;
+				case parseFloat(data.memberData.kd) < 2.0:
+					roleName = "KD 1.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 2.5:
+					roleName = "KD 2+";
+					break;
+				case parseFloat(data.memberData.kd) < 3.0:
+					roleName = "KD 2.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 3.5:
+					roleName = "KD 3+";
+					break;
+				case parseFloat(data.memberData.kd) < 4.0:
+					roleName = "KD 3.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 4.5:
+					roleName = "KD 4+";
+					break;
+				case parseFloat(data.memberData.kd) < 5.0:
+					roleName = "KD 4.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 5.5:
+					roleName = "KD 5+";
+					break;
+				case parseFloat(data.memberData.kd) < 6.0:
+					roleName = "KD 5.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 6.5:
+					roleName = "KD 6+";
+					break;
+				case parseFloat(data.memberData.kd) < 7:
+					roleName = "KD 6.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 7.5:
+					roleName = "KD 7+";
+					break;
+				case parseFloat(data.memberData.kd) < 8:
+					roleName = "KD 7.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 8.5:
+					roleName = "KD 8+";
+					break;
+				case parseFloat(data.memberData.kd) < 9:
+					roleName = "KD 8.5+";
+					break;
+				case parseFloat(data.memberData.kd) < 9.5:
+					roleName = "KD 9+";
+					break;
+				case parseFloat(data.memberData.kd) < 10:
+					roleName = "KD 9.5+";
+					break;
+				case parseFloat(data.memberData.kd) > 10:
+					roleName = "KD 10+";
+					break;
+				default:
+					roleName = "KD 0+";
+					break;
 				}
 				const role = message.guild.roles.cache.find((r) => r.name === roleName);
 				message.member.roles.add(role).catch(console.error);
