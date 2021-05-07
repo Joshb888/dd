@@ -61,11 +61,11 @@ If a player did missconfigure their profile, they can run: `{prefix}profile re-l
 4. Start your bot: `node index.js&`. (**I recommend you to use [pm2](https://pm2.keymetrics.io)**)
 5. Star this repo if you liked!
 
-### Configuring ScreenShotJS (GER-SQUAD)
+### Configuring - SquadStatsJS PRO
 
-ScreenShotJS (GER-SQUAD) can be configured via .env file which by default is called .env.example.
+SquadStatsJS PRO can be configured via .js file which by default is called `config.example.js`
 
-The config file needs to be called .env at the end and a example can be found below:
+The config file needs to be called `config.js` at the end and a example can be found below:
 
 ```js
 module.exports = {
@@ -154,7 +154,7 @@ module.exports = {
 
 ## Credits
 
-- @[AtlantaBot](https://github.com/Androz2091/AtlantaBot) for the amazing bot, used the core structure aswell couple of the basic commands.
+- @[AtlantaBot](https://github.com/Androz2091/AtlantaBot) for the amazing bot, used the core base.
 - [SquadJS](https://github.com/Thomas-Smyth/SquadJS) - The reason this bot is made.
 - My mom for feeding me while I was coding.
 
