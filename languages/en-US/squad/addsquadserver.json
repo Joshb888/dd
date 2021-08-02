@@ -38,7 +38,7 @@
     "SET_SERVER_ID": "{{prefix}}add-sq serverid",
     "SET_IGNORED_MAPS": "How to set your ignored maps?",
     "SET_IGNORED_MAP": "{{prefix}}add-sq ignoredmap",
-    "DELETEROLES": "Please delete the following role first <@&{{role}}>",
+    "ROLESGIVEN": "All K/D Roles are created.",
     "PANE_NAME": "Squad Configuration Pane",
     "PANE_DESC": "The password is censored, please don't write your squad database password on a public channel.",
     "FILL_HOST": "Fill in the **host** IP address (Write `cancel` to stop.)",
